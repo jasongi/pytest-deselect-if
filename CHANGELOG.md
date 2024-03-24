@@ -1,9 +1,9 @@
 # Changelog
 
 ## 0.1.1 2024-03-24
-- fix entrypoint
+- explicitly export deselect_if
 
 ## 0.1.0 2024-03-24
 - initial release
-- added uncollect_if custom marker
-- added `pytest_make_collect_report` hookwrapper to modify the collected items to exclude `Function` items when `uncollect_if` returns True
+- added deselect_if custom marker
+- added `pytest_collection_modifyitems` to modify the collected items to deselect `Function` items when `deselect_if` returns True
