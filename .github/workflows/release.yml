@@ -4,7 +4,7 @@ on:
     types: [released]
 jobs:
   call-main:
-    uses: jasongi/pytest-uncollect-if/.github/workflows/main.yml@main
+    uses: jasongi/pytest-deselect-if/.github/workflows/main.yml@main
   build:
     runs-on: ubuntu-latest
     steps:

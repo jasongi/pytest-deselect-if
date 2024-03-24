@@ -1,3 +1,3 @@
-# Welcome to pytest-uncollect-if
+# Welcome to pytest-deselect-if
 
-A plugin to uncollect pytests tests rather than using skipif
+A plugin to deselect pytests tests rather than using skipif
