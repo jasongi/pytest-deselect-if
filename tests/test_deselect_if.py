@@ -17,12 +17,10 @@ mark_alias = pytest.mark.parametrize(
 
 def test_run_without_deselect_marker(pytester):
     """Test should run normally without the deselect_if marker."""
-    pytester.makepyfile(
-        """
+    pytester.makepyfile("""
         def test_simple_case():
             assert 1 == 1
-        """
-    )
+        """)
     result = pytester.runpytest("-v")
     result.stdout.fnmatch_lines(
         [
@@ -35,9 +33,7 @@ def test_run_without_deselect_marker(pytester):
 @mark_alias
 def test_not_parametrized_class(pytester, transform_code):
     """Test that an error is raised when the deselect_if marker is used on a non-parametrized test."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -45,9 +41,7 @@ def test_not_parametrized_class(pytester, transform_code):
         class TestTestClass:
             def test_not_parametrized(self):
                 assert 1 == 1
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -60,9 +54,7 @@ def test_not_parametrized_class(pytester, transform_code):
 @mark_alias
 def test_class_decoration_applies_to_functions(pytester, transform_code):
     """Test that the deselect_if marker can be applied to a class and will apply to all functions in the class."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -76,9 +68,7 @@ def test_class_decoration_applies_to_functions(pytester, transform_code):
 
             def test_two(self, param):
                 assert param < 2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -93,9 +83,7 @@ def test_class_decoration_applies_to_functions(pytester, transform_code):
 @mark_alias
 def test_class_decoration_with_function_deselectif(pytester, transform_code):
     """Test that the deselect_if marker can be applied to a class and will apply to all functions in the class."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -109,9 +97,7 @@ def test_class_decoration_with_function_deselectif(pytester, transform_code):
             @param_decorator
             def test_two(self, param):
                 assert param < 2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -126,9 +112,7 @@ def test_class_decoration_with_function_deselectif_with_raise_when_not_parametri
     pytester, transform_code
 ):
     """Test that the deselect_if marker can be applied to a class and will apply to all functions in the class."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -142,9 +126,7 @@ def test_class_decoration_with_function_deselectif_with_raise_when_not_parametri
             @param_decorator
             def test_two(self, param):
                 assert param < 2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -159,9 +141,7 @@ def test_class_decoration_with_function_deselectif_with_raise_when_not_parametri
 @mark_alias
 def test_class_parametrized_decoration_on_function_deselectif(pytester, transform_code):
     """Test that the deselect_if marker can be applied to a class and will apply to all functions in the class."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -175,9 +155,7 @@ def test_class_parametrized_decoration_on_function_deselectif(pytester, transfor
 
             def test_two(self, param):
                 assert param < 3
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -193,18 +171,14 @@ def test_class_parametrized_decoration_on_function_deselectif(pytester, transfor
 @mark_alias
 def test_not_parametrized(pytester, transform_code):
     """Test that an error is raised when the deselect_if marker is used on a non-parametrized test."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
         @pytest.mark.deselect_if(func=lambda **kwargs: True)
         def test_not_parametrized():
             assert 1 == 1
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -217,17 +191,13 @@ def test_not_parametrized(pytester, transform_code):
 @mark_alias
 def test_no_func_arg_error(pytester, transform_code):
     """Test that an error is raised when the deselect_if marker has no func argument."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
 
         @pytest.mark.deselect_if
         def test_no_func_arg():
             assert 1 == 1
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -240,9 +210,7 @@ def test_no_func_arg_error(pytester, transform_code):
 @mark_alias
 def test_deselect_based_on_condition(pytester, transform_code):
     """Test that a test is deselected based on the deselect_if condition."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -252,9 +220,7 @@ def test_deselect_based_on_condition(pytester, transform_code):
         @deselect_if(func=lambda param, **kwargs: param == 2)
         def test_condition_met(param):
             assert param != 2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -268,9 +234,7 @@ def test_deselect_based_on_condition(pytester, transform_code):
 @mark_alias
 def test_run_when_condition_not_met(pytester, transform_code):
     """Ensure test runs when the deselect_if condition is not met."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -280,9 +244,7 @@ def test_run_when_condition_not_met(pytester, transform_code):
         @deselect_if(func=lambda param, **kwargs: param == 2)
         def test_condition_not_met(param):
             assert param > 2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -297,9 +259,7 @@ def test_run_when_condition_not_met(pytester, transform_code):
 @mark_alias
 def test_multiple_parameters_and_conditions(pytester, transform_code):
     """Test with multiple parameters and a more complex deselect condition."""
-    pytester.makepyfile(
-        transform_code(
-            """
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -311,9 +271,7 @@ def test_multiple_parameters_and_conditions(pytester, transform_code):
         @deselect_if(func=lambda param1, param2, **kwargs: param1 == param2)
         def test_complex_condition(param1, param2):
             assert param1 != param2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v")
     result.stdout.re_match_lines(
         [
@@ -330,16 +288,12 @@ def test_multiple_parameters_and_conditions(pytester, transform_code):
 def test_deselection_through_markers(pytester, transform_code):
     """Test with multiple parameters and a more complex deselect condition."""
     # register mymarker
-    pytester.makeini(
-        """
+    pytester.makeini("""
         [pytest]
         markers =
             mymarker: my custom marker
-    """
-    )
-    pytester.makepyfile(
-        transform_code(
-            """
+    """)
+    pytester.makepyfile(transform_code("""
         import pytest
         from pytest_deselect_if import deselect_if
 
@@ -352,9 +306,7 @@ def test_deselection_through_markers(pytester, transform_code):
         @deselect_if(func=lambda param1, param2, **kwargs: param1 == param2)
         def test_complex_condition(param1, param2):
             assert param1 != param2
-        """
-        )
-    )
+        """))
     result = pytester.runpytest("-v", "-m", "not mymarker")
     result.stdout.re_match_lines(
         [
